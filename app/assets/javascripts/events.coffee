@@ -5,8 +5,8 @@ $ ->
       center: 'title'
       right: 'agendaWeek'
     defaultDate: window.currentDate
-    editable: false
-    eventLimit: true
+    editable: true
+    nextDayThreshold: '00:00:00'
     events: (start, end, timezone, callback) ->
       $.ajax
         url: '/events.json'
@@ -14,13 +14,20 @@ $ ->
         data:
           start: start.unix()
           end: end.unix()
-        success: (doc) ->
+        success: (json) ->
           events = []
-          $(doc).find('event').each ->
-            events.push
-              title: $(this).attr('description')
-              start: $(this).attr('start')
-            return
+          for event in json.events
+            do ->
+              events.push
+                title: event.title
+                start: event.start
+                end: event.end
+              return
           callback events
           return
-  return
+
+  $('#form').on 'ajax:error', 'form', ->
+    alert 'Error!'
+
+  $('#form').on 'ajax:success', 'form', ->
+    $('#calendar').fullCalendar( 'refetchEvents' )

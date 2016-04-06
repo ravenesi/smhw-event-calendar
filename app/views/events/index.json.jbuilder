@@ -1,5 +1,5 @@
 json.events @events do |event|
   json.title event.description
-  json.start_date event.start_date.to_s(:db)
-  json.end_date event.end_date.to_s(:db)
+  json.start event.start_date.to_s(:db) + 'T00:00:00'
+  json.end event.end_date.to_s(:db) + 'T23:59:59'
 end

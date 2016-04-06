@@ -18,21 +18,21 @@ RSpec.describe Event do
     it 'return events for dates' do
       create(:event, start_date: Date.today, end_date: 1.day.from_now.to_date)
 
-      start_date = Date.today
-      end_date = 7.days.from_now.to_date
-
-      events = Event.event_between(start_date, end_date)
+      events = Event.event_between(
+        Date.today.beginning_of_week,
+        Date.today.end_of_week
+      )
 
       expect(events.size).to be(1)
     end
 
     it 'not return events already happens' do
-      create(:event, start_date: 2.days.ago, end_date: 1.day.ago)
+      create(:event, start_date: 20.days.ago, end_date: 10.day.ago)
 
-      start_date = Date.today
-      end_date = 7.days.from_now.to_date
-
-      events = Event.event_between(start_date, end_date)
+      events = Event.event_between(
+        Date.today.beginning_of_week,
+        Date.today.end_of_week
+      )
 
       expect(events.size).to be(0)
     end

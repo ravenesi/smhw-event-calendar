@@ -19,8 +19,8 @@ RSpec.describe 'events/index.json.jbuilder' do
     expect(events.size).to eql(1)
     expect(events.first).to eq(
       'title' => 'Test event',
-      'start_date' => Date.today.to_s(:db),
-      'end_date' => 1.day.from_now.to_date.to_s(:db),
+      'start' => Date.today.to_s(:db) + 'T00:00:00',
+      'end' => 1.day.from_now.to_date.to_s(:db) + 'T23:59:59',
     )
   end
 end
